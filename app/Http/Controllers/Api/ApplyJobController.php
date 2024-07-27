@@ -75,12 +75,9 @@ class ApplyJobController extends Controller
 
     public function see_job(Request $request)
 {
-    // Ambil semua lowongan pekerjaan
     $vacancies = Job_vacancies::all();
 
-    // Map setiap lowongan pekerjaan ke format yang diinginkan
     $trapped = $vacancies->map(function ($vacancy) {
-        // Ambil posisi terkait untuk setiap lowongan pekerjaan
         $positions = Available_position::where('job_vacancy_id', $vacancy->id)
             ->get()
             ->map(function ($position) use ($vacancy) {
@@ -104,11 +101,11 @@ class ApplyJobController extends Controller
             'category' => $vacancy->job_categories->toArray(),
             'company' => $vacancy->company,
             'address' => $vacancy->address,
-            'positions' => $positions // Data posisi
+            'positions' => $positions 
         ];
     });
 
-    // Mengembalikan respons JSON
+  
     return response()->json([
         'vacancies' => $trapped
     ], 200);
